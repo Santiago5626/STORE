@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard";
 const ProductList = ({ searchQuery, setSearchQuery }) => {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(""); 
+  const [loading, setLoading] = useState(true);
 
   const uniqueCategories = useMemo(() => {
     const categoriesSet = new Set(products.map(product => product.category));
@@ -11,11 +12,25 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
   }, [products]);
 
   useEffect(() => {
-    const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
-    setProducts(savedProducts); // Mostrar los productos guardados en el localStorage
-  }, []); // Solo se ejecuta una vez cuando se monta el componente
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products');
+        const apiProducts = await response.json();
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const allProducts = [...apiProducts, ...savedProducts];
+        setProducts(allProducts);
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        setProducts(savedProducts);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Filtrar productos basados en la búsqueda y la categoría seleccionada
+    fetchProducts();
+  }, []);
+
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -24,6 +39,16 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
 
     return matchesSearch && matchesCategory;
   });
+
+  if (loading) {
+    return (
+      <div className="container mt-5 text-center">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5">
@@ -48,7 +73,6 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
         </select>
       </div>
 
-      {/* Mostrar productos filtrados */}
       <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
         {filteredProducts.map((product) => (
           <div className="col" key={product.id}>

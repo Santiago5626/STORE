@@ -3,8 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AddProductModal from '../components/AddProductModal';
-
-
+import ProductCard from '../components/ProductCard';
 
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
@@ -20,11 +19,18 @@ const ProductManagement = () => {
         if (!response.ok) {
           throw new Error("No se pudieron obtener los productos.");
         }
-        const data = await response.json();
-        setProducts(data);
+        const apiProducts = await response.json();
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const allProducts = [...apiProducts, ...savedProducts];
+        setProducts(allProducts);
       } catch (error) {
         console.error("Error al obtener los productos:", error);
-        setError("Error al cargar los productos. Por favor, intente más tarde.");
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        if (savedProducts.length > 0) {
+          setProducts(savedProducts);
+        } else {
+          setError("Error al cargar los productos. Por favor, intente más tarde.");
+        }
       } finally {
         setLoading(false);
       }
@@ -33,7 +39,6 @@ const ProductManagement = () => {
     fetchProducts();
   }, []);
 
-  // Agregar producto nuevo o actualizar existente
   const handleSaveProduct = (product) => {
     if (selectedProduct) {
       setProducts(products.map(p => (p.id === product.id ? product : p)));
@@ -48,7 +53,6 @@ const ProductManagement = () => {
     setProducts(products.filter(product => product.id !== productId));
   };
 
-  // Manejar edición de producto
   const handleEdit = (product) => {
     setSelectedProduct(product);
     setModalOpen(true);
@@ -108,51 +112,12 @@ const ProductManagement = () => {
           <div className="row g-4">
             {products.map(product => (
               <div key={product.id} className="col-12 col-md-6 col-lg-4">
-                <div className="card h-100 shadow-sm">
-                  <div className="position-relative">
-                    <img 
-                      src={product.image} 
-                      className="card-img-top p-3"
-                      style={{ height: '180px', objectFit: 'contain', backgroundColor: '#f8f9fa' }}
-                      alt={product.title}
-                    />
-                    <span className="position-absolute top-0 end-0 badge bg-primary m-3">
-                      {product.category}
-                    </span>
-                  </div>
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title">{product.title}</h5>
-                    <p 
-                      className="card-text text-muted small mb-2"
-                      style={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 3, 
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        
-                      }}
-                    >
-                      {product.description}
-                    </p>
-                    <p className="card-text text-primary fw-bold mb-3">
-                      ${product.price.toFixed(2)}
-                    </p>
-                    <div className="d-flex flex-column gap-2">
-                      <button 
-                        className="btn btn-outline-primary w-100"
-                        onClick={() => handleEdit(product)}
-                      >
-                        <i className="bi bi-pencil"></i> Editar
-                      </button>
-                      <button 
-                        className="btn btn-outline-danger w-100"
-                        onClick={() => handleDelete(product.id)}
-                      >
-                        <i className="bi bi-trash"></i> Eliminar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <ProductCard 
+                  product={product}
+                  isManagementView={true}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
               </div>
             ))}
           </div>

@@ -1,24 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
-const AddProductModal = ({ show, onHide, onAddProduct }) => {
+const AddProductModal = ({ show, onHide, onSaveProduct }) => {
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [productDescription, setProductDescription] = useState('');
-  const [productImage, setProductImage] = useState(null); // Guardar la URL de la imagen
-  const [categories, setCategories] = useState([]); // Lista de categorías
+  const [productImage, setProductImage] = useState(null);
+  const [categories, setCategories] = useState([]);
 
-  // Cargar productos desde localStorage y extraer categorías únicas
   useEffect(() => {
-    const savedProducts = JSON.parse(localStorage.getItem('products')) || []; // Asegúrate de que el localStorage contiene 'products'
-    
-    const categoriesSet = new Set(savedProducts.map(product => product.category)); // Extraer categorías únicas
-    setCategories(Array.from(categoriesSet)); // Convertir el Set en un array
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products/categories');
+        const apiCategories = await response.json();
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const localCategories = savedProducts.map(product => product.category);
+        const allCategories = [...new Set([...apiCategories, ...localCategories])];
+        
+        setCategories(allCategories);
+        
+        if (allCategories.length > 0) {
+          setProductCategory(allCategories[0]);
+        }
+      } catch (error) {
+        console.error('Error al cargar las categorías:', error);
+        const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+        const localCategories = [...new Set(savedProducts.map(product => product.category))];
+        setCategories(localCategories);
+        
+        if (localCategories.length > 0) {
+          setProductCategory(localCategories[0]);
+        }
+      }
+    };
 
-    if (categoriesSet.size > 0) {
-      setProductCategory(Array.from(categoriesSet)[0]); // Establecer la primera categoría como predeterminada
-    }
+    fetchCategories();
   }, []);
 
   const handleAddProduct = () => {
@@ -27,31 +44,25 @@ const AddProductModal = ({ show, onHide, onAddProduct }) => {
       price: parseFloat(productPrice),
       category: productCategory,
       description: productDescription,
-      image: productImage, // Aquí ya guardamos la URL de datos de la imagen
+      image: productImage,
     };
     
-    // Obtener los productos existentes en localStorage
     const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
-    
-    // Agregar el nuevo producto al array de productos
     savedProducts.push(newProduct);
-    
-    // Guardar todos los productos en el localStorage
     localStorage.setItem('products', JSON.stringify(savedProducts));
     
-    onAddProduct(newProduct);  // Actualizar el estado en el componente principal
-    onHide();  // Cerrar el modal después de agregar el producto
+    onSaveProduct(newProduct);
+    onHide();
   };
 
-  // Función para manejar la subida de imagen
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setProductImage(reader.result); // Establecer la URL de datos en el estado
+        setProductImage(reader.result);
       };
-      reader.readAsDataURL(file); // Leer el archivo como una URL de datos
+      reader.readAsDataURL(file);
     }
   };
 

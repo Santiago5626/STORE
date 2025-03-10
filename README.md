@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# 🛍️ Tienda React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+¡Hola! Esta es una tienda online hecha con React que te permite ver productos, agregarlos al carrito y gestionar un catálogo. 
 
-## Available Scripts
+## 🚀 ¿Qué puedes hacer?
 
-In the project directory, you can run:
+- Ver productos de una API y productos locales
+- Buscar productos por nombre o descripción
+- Filtrar productos por categoría
+- Agregar productos al carrito
+- Gestionar el catálogo (agregar, editar, eliminar productos)
+- Ver el resumen de tu carrito
 
-### `npm start`
+## 📦 ¿Qué necesitas para empezar?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Tener instalado Node.js (versión 14 o superior)
+2. Un editor de código (recomendamos VSCode)
+3. Las siguientes dependencias (ya incluidas en el package.json):
+   - react-bootstrap: Para los componentes de UI
+   - bootstrap: Para los estilos
+   - material-icons: Para los iconos
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🔧 Instalación
 
-### `npm test`
+1. Clona el repo:
+```bash
+git clone [url-del-repo]
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+2. Instala las dependencias:
+```bash
+npm install
+```
 
-### `npm run build`
+3. ¡Arranca el proyecto!:
+```bash
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Y listo, se abrirá en http://localhost:3000 🚀
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📱 ¿Cómo usar la app?
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Como Cliente
+1. Navega por los productos en la página principal
+2. Usa el buscador para encontrar productos específicos
+3. Filtra por categorías usando el selector
+4. Agrega productos al carrito haciendo clic en "Agregar al carrito"
+5. Revisa tu carrito haciendo clic en el icono del carrito
 
-### `npm run eject`
+### Como Administrador
+1. Ve a la sección de gestión de productos
+2. Agrega nuevos productos con el botón "Agregar Producto"
+3. Edita o elimina productos existentes usando los botones en cada tarjeta
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 💡 Tips
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Los productos que agregues se guardan en localStorage
+- Puedes ver la descripción completa de los productos haciendo clic en "Ver más"
+- El carrito mantiene los productos aunque cierres el navegador
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 🤝 ¿Quieres contribuir?
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+¡Genial! Puedes:
+1. Hacer fork del repo
+2. Crear una rama para tus cambios
+3. Hacer push y abrir un pull request
 
-## Learn More
+## ⚠️ Importante
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- La API que usamos es https://fakestoreapi.com/
+- Los productos que agregues se guardan localmente
+- Necesitas conexión a internet para cargar los productos de la API
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Hecho con ❤️ y React
