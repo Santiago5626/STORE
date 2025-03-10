@@ -11,20 +11,8 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
   }, [products]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error("No se pudieron obtener los productos.");
-        }
-        const data = await response.json();
-        setProducts(data); // Guardar productos en el estado
-      } catch (error) {
-        console.error("Error al obtener los productos:", error);
-      }
-    };
-
-    fetchProducts();
+    const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    setProducts(savedProducts); // Mostrar los productos guardados en el localStorage
   }, []); // Solo se ejecuta una vez cuando se monta el componente
 
   // Filtrar productos basados en la búsqueda y la categoría seleccionada
@@ -32,9 +20,9 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       product.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesCategory = selectedCategory ? product.category === selectedCategory : true; // Filtrar por categoría seleccionada
+    const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
 
-    return matchesSearch && matchesCategory; // Retornar productos que coinciden con la búsqueda y la categoría
+    return matchesSearch && matchesCategory;
   });
 
   return (
@@ -45,13 +33,13 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
           className="form-control me-2 w-50" 
           placeholder="Buscar productos..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)} // Actualizar el estado de búsqueda cuando el usuario escribe
+          onChange={(e) => setSearchQuery(e.target.value)} 
         />
         
         <select
           className="form-select w-auto" 
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)} // Actualizar el estado de categoría seleccionada
+          onChange={(e) => setSelectedCategory(e.target.value)} 
         >
           <option value="">Todas las categorías</option>
           {uniqueCategories.map((category, index) => (
