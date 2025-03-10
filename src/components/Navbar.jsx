@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getCart } from '../utils/cartUtils';
+import CartModal from './CartModal';
 
 const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showCartModal, setShowCartModal] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
@@ -63,9 +65,6 @@ const Navbar = () => {
               <Link to="/shop" className="nav-link">Productos</Link>
             </li>
             <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Categorías
-              </a>
               <ul className="dropdown-menu">
                 <li><Link to="/shop" className="dropdown-item">Electrónicos</Link></li>
                 <li><Link to="/shop" className="dropdown-item">Hogar</Link></li>
@@ -83,7 +82,14 @@ const Navbar = () => {
           <div className="d-flex ms-3">
             <a className="nav-link" href="#"><i className="fas fa-search"></i></a>
             <div className="position-relative d-inline-block">
-              <a className="nav-link" href="#">
+              <a 
+                className="nav-link" 
+                href="#" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowCartModal(true);
+                }}
+              >
                 <i className="fas fa-shopping-cart cart-icon"></i>
                 {cartCount > 0 && (
                   <span className="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-primary cart-badge">
@@ -91,6 +97,10 @@ const Navbar = () => {
                   </span>
                 )}
               </a>
+              <CartModal 
+                show={showCartModal} 
+                onHide={() => setShowCartModal(false)} 
+              />
             </div>
             <div className="position-relative" ref={dropdownRef}>
               <a 

@@ -2,10 +2,9 @@ import { useEffect, useState, useMemo } from "react";
 import ProductCard from "./ProductCard";
 
 const ProductList = ({ searchQuery, setSearchQuery }) => {
-  const [products, setProducts] = useState([]); // Estado para los productos
-  const [selectedCategory, setSelectedCategory] = useState(""); // Estado para la categoría seleccionada
+  const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(""); 
 
-  // useMemo para optimizar la extracción de categorías únicas
   const uniqueCategories = useMemo(() => {
     const categoriesSet = new Set(products.map(product => product.category));
     return Array.from(categoriesSet);

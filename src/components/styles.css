@@ -50,6 +50,19 @@
   justify-content: center;
 }
 
+/* Cart Modal Styles */
+.cart-item {
+  transition: background-color 0.2s;
+}
+
+.cart-item:hover {
+  background-color: #f8f9fa;
+}
+
+.cart-item-image {
+  border-radius: 4px;
+}
+
 .cart-icon {
   font-size: 1.25rem;
   position: relative;
