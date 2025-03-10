@@ -40,18 +40,17 @@ const ProductList = ({ searchQuery, setSearchQuery }) => {
 
   return (
     <div className="container mt-5">
-      {/* Campo de búsqueda y selección de categoría */}
       <div className="d-flex align-items-center mb-4">
         <input
           type="text"
-          className="form-control me-2 w-50" // Limitar el ancho del input
+          className="form-control me-2 w-50" 
           placeholder="Buscar productos..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)} // Actualizar el estado de búsqueda cuando el usuario escribe
         />
         
         <select
-          className="form-select w-auto" // Limitar el ancho del select
+          className="form-select w-auto" 
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)} // Actualizar el estado de categoría seleccionada
         >
